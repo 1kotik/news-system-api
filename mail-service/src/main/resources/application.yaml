@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: mail-service
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: flapdance1@gmail.com
+    password: jpvdvnacdyczmtau
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+          auth: true
+  liquibase:
+    enabled: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/news-system-api-mail-service-db
+    username: postgres
+    password: 5409
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+server:
+  port: 8084

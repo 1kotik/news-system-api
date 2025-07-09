@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/changeset/create-register-email-confirmation-codes-table.yaml
+  - include:
+      file: db/changelog/changeset/add-created-at-column-to-registration-confirmation-codes-table.yaml
+  - include:
+      file: db/changelog/changeset/rename-created-at-column-in-registration-confirmation-codes-table.yaml

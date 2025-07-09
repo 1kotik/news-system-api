@@ -1,0 +1,26 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-register-email-confirmation-codes-table
+      author: kotik
+      changes:
+        - createTable:
+            tableName: register_email_confirmation_codes
+            columns:
+              - column:
+                  name: code_id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                  defaultValueComputed: gen_random_uuid()
+              - column:
+                  name: email
+                  type: varchar(255)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: code
+                  type: integer
+                  constraints:
+                    nullable: false
