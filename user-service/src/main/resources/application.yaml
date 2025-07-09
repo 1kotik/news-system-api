@@ -1,0 +1,13 @@
+spring:
+  liquibase:
+    enabled: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/news-system-api-users
+    username: postgres
+    password: 5409
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  application:
+    name: user-service
+server:
+  port: 8083

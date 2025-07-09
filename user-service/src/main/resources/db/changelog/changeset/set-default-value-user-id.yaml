@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: set-default-value-user-id
+      author: kotik
+      changes:
+        - addDefaultValue:
+            tableName: users
+            columnName: user_id
+            defaultValueComputed: gen_random_uuid()

@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/changeset/create-users-table.yaml
+  - include:
+      file: db/changelog/changeset/create-user-profiles-table.yaml
+  - include:
+      file: db/changelog/changeset/create-roles-table.yaml
+  - include:
+      file: db/changelog/changeset/create-users-roles-table.yaml
+  - include:
+      file: db/changelog/changeset/set-default-value-user-id.yaml
+  - include:
+      file: db/changelog/changeset/set-default-value-role-id.yaml
+  - include:
+      file: db/changelog/changeset/add-profile-id-in-profiles-table.yaml

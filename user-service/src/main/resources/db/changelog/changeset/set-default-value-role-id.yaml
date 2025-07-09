@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: set-default-value-role-id
+      author: kotik
+      changes:
+        - addDefaultValue:
+            tableName: roles
+            columnName: role_id
+            defaultValueComputed: gen_random_uuid()

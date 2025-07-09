@@ -1,0 +1,33 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-user-profiles-table
+      author: kotik
+      changes:
+        - createTable:
+            tableName: user_profiles
+            columns:
+              - column:
+                  name: user_id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: public_name
+                  type: varchar(255)
+              - column:
+                  name: bio
+                  type: text
+              - column:
+                  name: location
+                  type: varchar(255)
+              - column:
+                  name: avatar
+                  type: varchar(255)
+        - addForeignKeyConstraint:
+             baseTableName: user_profiles
+             baseColumnNames: user_id
+             referencedTableName: users
+             referencedColumnNames: user_id
+             constraintName: fk_users_user_profiles
+             onDelete: cascade

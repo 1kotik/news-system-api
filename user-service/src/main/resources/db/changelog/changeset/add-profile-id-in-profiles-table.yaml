@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-profile-id-in-profiles-table
+      author: kotik
+      changes:
+        - dropColumn:
+            tableName: user_profiles
+            columnName: user_id
+        - addColumn:
+            tableName: user_profiles
+            columns:
+              - column:
+                  name: user_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: profile_id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: user_profiles
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: user_id
+            constraintName: fk_users_profiles_profile
