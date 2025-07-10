@@ -26,8 +26,7 @@ public class DefaultUserMailService implements UserMailService {
     public void generateConfirmationCode(String email) {
         int code = generateCode();
 
-        RegistrationConfirmationCode confirmationCode = registrationConfirmationCodeRepository
-                .save(RegistrationConfirmationCode.builder()
+        registrationConfirmationCodeRepository.save(RegistrationConfirmationCode.builder()
                         .code(code)
                         .email(email)
                         .expiredAt(ZonedDateTime.now().plusHours(4))
@@ -52,7 +51,7 @@ public class DefaultUserMailService implements UserMailService {
             throw new RuntimeException("Invalid confirmation code");
         }
 
-        if(confirmationCode.getExpiredAt().isBefore(ZonedDateTime.now())) {
+        if (confirmationCode.getExpiredAt().isBefore(ZonedDateTime.now())) {
             registrationConfirmationCodeRepository.delete(confirmationCode);
             throw new RuntimeException("Expired confirmation code");
         }

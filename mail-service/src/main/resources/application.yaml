@@ -1,11 +1,13 @@
 spring:
+  config:
+    import: optional:.env[.properties]
   application:
     name: mail-service
   mail:
     host: smtp.gmail.com
     port: 587
-    username: flapdance1@gmail.com
-    password: jpvdvnacdyczmtau
+    username: ${SMTP_USERNAME}
+    password: ${SMTP_PASSWORD}
     properties:
       mail:
         smtp:
@@ -15,10 +17,14 @@ spring:
   liquibase:
     enabled: true
   datasource:
-    url: jdbc:postgresql://localhost:5432/news-system-api-mail-service-db
-    username: postgres
-    password: 5409
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 server:
   port: 8084
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8081/eureka
