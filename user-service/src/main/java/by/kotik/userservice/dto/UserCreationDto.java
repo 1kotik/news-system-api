@@ -12,7 +12,7 @@ public class UserCreationDto {
     @Email
     private String email;
     @NotBlank
-    private String nickname;
+    private String username;
     @NotBlank
     private String password;
 }

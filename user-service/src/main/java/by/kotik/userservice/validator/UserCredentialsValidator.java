@@ -14,8 +14,8 @@ public class UserCredentialsValidator implements ConstraintValidator<UniqueCrede
     @Override
     public boolean isValid(UserCreationDto userCreationDto, ConstraintValidatorContext constraintValidatorContext) {
         boolean isEmailExists = userRepository.findByEmail(userCreationDto.getEmail()).isPresent();
-        boolean isNicknameExists = userRepository.findByNickname(userCreationDto.getNickname()).isPresent();
+        boolean isUsernameExists = userRepository.findByUsername(userCreationDto.getUsername()).isPresent();
 
-        return !isEmailExists && !isNicknameExists;
+        return !isEmailExists && !isUsernameExists;
     }
 }

@@ -1,9 +1,7 @@
 package by.kotik.userservice.service;
 
 import by.kotik.userservice.dto.PasswordDto;
-import by.kotik.userservice.dto.UserCreationDto;
 import by.kotik.userservice.dto.UserDto;
-import by.kotik.userservice.dto.UserNicknameAndEmailDto;
 import by.kotik.userservice.entity.User;
 import by.kotik.userservice.mapper.UserMapper;
 import by.kotik.userservice.repository.UserRepository;
@@ -11,9 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
 import java.util.NoSuchElementException;
-import java.util.Set;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -33,43 +29,19 @@ public class DefaultUserService implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public UserDto getUserByNickname(String nickname) {
-        return userRepository.findByNickname(nickname)
-                .map(userMapper::userToUserDto)
-                .orElseThrow(() -> new NoSuchElementException("User not found"));
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public UserDto getUserByEmail(String email) {
-        return userRepository.findByEmail(email)
+    public UserDto getUserByLogin(String login) {
+        return userRepository.findByLogin(login)
                 .map(userMapper::userToUserDto)
                 .orElseThrow(() -> new NoSuchElementException("User not found"));
     }
 
     @Override
     @Transactional
-    public UserNicknameAndEmailDto createUser(UserCreationDto userCreationDto) {
-        User user = userMapper.userCreationDtoToUser(userCreationDto);
-        user.setRoles(new HashSet<>(Set.of(roleService.getRoleByName("ROLE_USER"))));
-        user.getUserProfile().setUser(user);
-        userRepository.save(user);
-        return userMapper.userCreationDtoToUserNicknameAndEmailDto(userCreationDto);
-    }
-
-    @Override
-    @Transactional
-    public UserDto changeNickname(UUID userId, String newNickname) {
+    public UserDto changeUsername(UUID userId, String newUsername) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("User not found"));
-        user.setNickname(newNickname);
+        user.setUsername(newUsername);
         return userMapper.userToUserDto(userRepository.save(user));
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public boolean doesUserExist(String email) {
-        return userRepository.findByEmail(email).isPresent();
     }
 
     @Override
@@ -80,4 +52,5 @@ public class DefaultUserService implements UserService {
         user.setPassword(passwordDto.getPassword());
         return userMapper.userToUserDto(userRepository.save(user));
     }
+
 }

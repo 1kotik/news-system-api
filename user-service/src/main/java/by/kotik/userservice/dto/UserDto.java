@@ -11,7 +11,7 @@ public class UserDto {
     private UUID userId;
     private String email;
     private String password;
-    private String nickname;
+    private String username;
     private UserProfileDto userProfile;
     private Set<RoleDto> roles = new HashSet<>();
 }

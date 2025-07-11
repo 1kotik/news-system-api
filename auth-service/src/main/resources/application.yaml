@@ -1,0 +1,14 @@
+spring:
+  config:
+    import: optional:.env[.properties]
+  application:
+    name: auth-service
+server:
+  port: 8085
+jwt:
+  secret: ${JWT_SECRET}
+  lifetime: 30m
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8081/eureka
