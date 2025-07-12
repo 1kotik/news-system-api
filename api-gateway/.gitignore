@@ -37,3 +37,4 @@ out/
 .vscode/
 /build
 /.gradle
+/src/main/resources/.env

@@ -5,6 +5,7 @@ import by.kotik.userservice.dto.UserDto;
 import by.kotik.userservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,11 +32,13 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserByLogin(login));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or #userId eq principal")
     @PatchMapping("/username/{userId}")
     public ResponseEntity<UserDto> changeUsername(@PathVariable UUID userId, @RequestParam String newUsername) {
         return ResponseEntity.ok(userService.changeUsername(userId, newUsername));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or #userId eq principal")
     @PatchMapping("/password/{userId}")
     public ResponseEntity<UserDto> changePassword(@PathVariable UUID userId, @RequestBody PasswordDto passwordDto) {
         return ResponseEntity.ok(userService.changePassword(userId, passwordDto));

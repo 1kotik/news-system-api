@@ -4,7 +4,11 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:8081/eureka
+jwt:
+  secret: ${JWT_SECRET}
 spring:
+  config:
+    import: optional:.env[.properties]
   application:
     name: api-gateway
   cloud:

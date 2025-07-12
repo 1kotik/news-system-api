@@ -23,6 +23,7 @@ dependencies {
     implementation("io.github.openfeign:feign-core:13.6")
     compileOnly("jakarta.servlet:jakarta.servlet-api:6.1.0")
     implementation("org.springframework:spring-webmvc:6.2.8")
+    implementation("org.springframework.security:spring-security-core:6.5.1")
 }
 
 test {

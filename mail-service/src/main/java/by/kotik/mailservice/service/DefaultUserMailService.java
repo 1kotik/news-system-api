@@ -4,14 +4,17 @@ import by.kotik.mailservice.dto.ConfirmationCodeDto;
 import by.kotik.mailservice.entity.RegistrationConfirmationCode;
 import by.kotik.mailservice.mapper.ConfirmationCodeMapper;
 import by.kotik.mailservice.repository.RegistrationConfirmationCodeRepository;
+import dto.TokenDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import util.JwtUtils;
 
 import java.time.ZonedDateTime;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -20,11 +23,16 @@ public class DefaultUserMailService implements UserMailService {
     private final JavaMailSender mailSender;
     private final RegistrationConfirmationCodeRepository registrationConfirmationCodeRepository;
     private final ConfirmationCodeMapper confirmationCodeMapper;
+    private final JwtUtils jwtUtils;
 
     @Override
     @Transactional
     public void generateConfirmationCode(String email) {
         int code = generateCode();
+
+        Optional<RegistrationConfirmationCode> registrationConfirmationCode =
+                registrationConfirmationCodeRepository.findByEmail(email);
+        registrationConfirmationCode.ifPresent(registrationConfirmationCodeRepository::delete);
 
         registrationConfirmationCodeRepository.save(RegistrationConfirmationCode.builder()
                         .code(code)
@@ -42,7 +50,7 @@ public class DefaultUserMailService implements UserMailService {
 
     @Override
     @Transactional
-    public ConfirmationCodeDto checkConfirmationCode(ConfirmationCodeDto confirmationCodeDto) {
+    public TokenDto checkConfirmationCode(ConfirmationCodeDto confirmationCodeDto) {
         RegistrationConfirmationCode confirmationCode = registrationConfirmationCodeRepository
                 .findByEmail(confirmationCodeDto.getEmail())
                 .orElseThrow(() -> new NoSuchElementException("Registration confirmation code not found"));
@@ -58,7 +66,7 @@ public class DefaultUserMailService implements UserMailService {
 
         registrationConfirmationCodeRepository.delete(confirmationCode);
 
-        return confirmationCodeDto;
+        return jwtUtils.insertAuthority(null, confirmationCodeDto.getEmail());
     }
 
     private int generateCode() {

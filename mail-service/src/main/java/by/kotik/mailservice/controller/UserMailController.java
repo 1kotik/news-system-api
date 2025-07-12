@@ -2,6 +2,7 @@ package by.kotik.mailservice.controller;
 
 import by.kotik.mailservice.dto.ConfirmationCodeDto;
 import by.kotik.mailservice.service.UserMailService;
+import dto.TokenDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,7 @@ public class UserMailController {
     }
 
     @DeleteMapping("/registration-code")
-    public ResponseEntity<ConfirmationCodeDto> checkConfirmationCode
+    public ResponseEntity<TokenDto> checkConfirmationCode
             (@RequestBody @Valid ConfirmationCodeDto confirmationCodeDto) {
         return ResponseEntity.ok(userMailService.checkConfirmationCode(confirmationCodeDto));
     }
