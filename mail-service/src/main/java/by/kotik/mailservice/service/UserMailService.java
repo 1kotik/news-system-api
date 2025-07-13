@@ -6,6 +6,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface UserMailService {
-    void generateConfirmationCode(String email);
+    TokenDto generateConfirmationCode(String email);
     TokenDto checkConfirmationCode(ConfirmationCodeDto confirmationCodeDto);
 }

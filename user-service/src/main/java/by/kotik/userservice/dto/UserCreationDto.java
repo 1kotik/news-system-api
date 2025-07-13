@@ -1,18 +1,20 @@
 package by.kotik.userservice.dto;
 
-import by.kotik.userservice.annotation.UniqueCredentials;
+import by.kotik.userservice.annotation.UniqueEmail;
+import by.kotik.userservice.annotation.UniqueUsername;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-@UniqueCredentials
 public class UserCreationDto {
-    @NotBlank
-    @Email
+    @NotBlank(message = "Provide email")
+    @Email(message = "Invalid email")
+    @UniqueEmail
     private String email;
-    @NotBlank
+    @NotBlank(message = "Provide username")
+    @UniqueUsername
     private String username;
-    @NotBlank
+    @NotBlank(message = "Provide password")
     private String password;
 }

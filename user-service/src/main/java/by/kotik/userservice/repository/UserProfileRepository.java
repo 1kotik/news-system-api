@@ -12,4 +12,7 @@ import java.util.UUID;
 public interface UserProfileRepository extends JpaRepository<UserProfile, UUID> {
     @Query("select up from UserProfile up where up.user.userId = :userId")
     Optional<UserProfile> findByUserId(UUID userId);
+
+    @Query("select up from UserProfile up where up.user.username = :login or up.user.email = :login")
+    Optional<UserProfile> findByLogin(String login);
 }

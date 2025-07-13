@@ -1,6 +1,6 @@
-package by.kotik.authservice.annotation;
+package by.kotik.userservice.annotation;
 
-import by.kotik.authservice.validator.UsernameValidator;
+import by.kotik.userservice.validator.UniqueUsernameValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
@@ -11,9 +11,9 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = UsernameValidator.class)
-public @interface Username {
-    String message() default "Invalid username.";
+@Constraint(validatedBy = UniqueUsernameValidator.class)
+public @interface UniqueUsername {
+    String message() default "This username already exists";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

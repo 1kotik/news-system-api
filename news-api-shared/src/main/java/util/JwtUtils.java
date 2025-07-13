@@ -38,7 +38,7 @@ public class JwtUtils {
                     claims.get("email", String.class),
                     claims.get("roles", List.class));
         } catch (Exception e) {
-            throw new GenericAuthenticationException("Invalid JWT");
+            return new UserAuthorizationDto();
         }
     }
 
@@ -51,24 +51,43 @@ public class JwtUtils {
             Claims claims = getClaimsFromToken(token);
             return claims.get("authorities", List.class);
         } catch (Exception e) {
-            throw new GenericAuthenticationException("Invalid Authorities JWT");
+            return new ArrayList<>();
         }
     }
 
-    public TokenDto insertAuthority(String authorityHeader, String authority) {
-        List<String> authorities = authorityHeader != null
+    public TokenDto insertAuthorities(String authorityHeader, List<String> authorities, Duration duration) {
+        List<String> existingAuthorities = authorityHeader != null
                 ? extractAuthorities(authorityHeader) : new ArrayList<>();
-        authorities.add(authority);
+        existingAuthorities.addAll(authorities);
 
         Map<String, Object> claims = new HashMap<>();
         claims.put("authorities", authorities);
 
         Date issuedAt = new Date();
-        Date expiresAt = new Date(issuedAt.getTime() + Duration.ofMinutes(5).toMillis());
+        Date expiresAt = new Date(issuedAt.getTime() + duration.toMillis());
 
         return new TokenDto(Jwts.builder()
                 .claims(claims)
                 .subject("authorities")
+                .issuedAt(issuedAt)
+                .expiration(expiresAt)
+                .signWith(getKey())
+                .compact());
+    }
+
+    public TokenDto generateAuthenticationToken(UserAuthorizationDto userAuthorizationDto, Duration lifetime) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("id", userAuthorizationDto.getUserId().toString());
+        claims.put("username", userAuthorizationDto.getUsername());
+        claims.put("email", userAuthorizationDto.getEmail());
+        claims.put("roles", userAuthorizationDto.getRoles());
+
+        Date issuedAt = new Date();
+        Date expiresAt = new Date(issuedAt.getTime() + lifetime.toMillis());
+
+        return new TokenDto(Jwts.builder()
+                .claims(claims)
+                .subject(userAuthorizationDto.getUsername())
                 .issuedAt(issuedAt)
                 .expiration(expiresAt)
                 .signWith(getKey())

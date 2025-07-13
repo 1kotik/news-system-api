@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - changeSet:
+      id: set-cascade-delete-profiles-table
+      author: kotik
+      changes:
+        - dropForeignKeyConstraint:
+            baseTableName: user_profiles
+            constraintName: fk_users_profiles_profile
+        - addForeignKeyConstraint:
+            baseTableName: user_profiles
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: user_id
+            constraintName: fk_users_profiles_profile
+            onDelete: cascade

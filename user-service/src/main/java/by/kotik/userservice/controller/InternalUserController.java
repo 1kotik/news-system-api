@@ -30,7 +30,7 @@ public class InternalUserController {
 
     @PreAuthorize("hasRole('ADMIN') or hasAuthority('MAIL_SERVICE')")
     @GetMapping("/email/{email}")
-    public boolean doesUserExistInternal(@PathVariable String email) {
+    public boolean doesUserExist(@PathVariable String email) {
         return internalUserService.doesUserExist(email);
     }
 

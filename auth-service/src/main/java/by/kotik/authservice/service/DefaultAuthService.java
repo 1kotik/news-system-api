@@ -34,14 +34,13 @@ public class DefaultAuthService implements AuthService {
         } catch (Exception e) {
             throw new GenericAuthenticationException("Invalid Credentials.");
         }
-        return new TokenDto(jwtService
-                .generateToken(userMapper.customUserDetailsDtoToUserAuthorizationDto(userDetails)));
+        return jwtService.generateToken(userMapper.customUserDetailsDtoToUserAuthorizationDto(userDetails));
     }
 
     @Override
     public TokenDto register(UserRegistrationDto userRegistrationDto) {
         userRegistrationDto.setPassword(passwordEncoder.encode(userRegistrationDto.getPassword()));
         UserAuthorizationDto createdUser = userDetailsService.createUser(userMapper.toTransitiveDto(userRegistrationDto));
-        return new TokenDto(jwtService.generateToken(createdUser));
+        return jwtService.generateToken(createdUser);
     }
 }

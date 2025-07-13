@@ -1,5 +1,6 @@
 package by.kotik.mailservice.config;
 
+import by.kotik.mailservice.filter.ConfirmationCodeExtractionFilter;
 import filter.UserInfoExtractionFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -23,7 +24,7 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(new UserInfoExtractionFilter(jwtUtils()), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new ConfirmationCodeExtractionFilter(jwtUtils()), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

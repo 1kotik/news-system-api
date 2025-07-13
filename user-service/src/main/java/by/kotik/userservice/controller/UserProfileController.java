@@ -20,15 +20,16 @@ import java.util.UUID;
 public class UserProfileController {
     private final UserProfileService userProfileService;
 
-    @GetMapping("/{userId}/profile")
-    public ResponseEntity<UserProfileDto> getUserProfile(@PathVariable UUID userId) {
-        return ResponseEntity.ok(userProfileService.findUserProfileByUserId(userId));
+    @GetMapping("/{login}/profile")
+    public ResponseEntity<UserProfileDto> getUserProfile(@PathVariable String login) {
+        return ResponseEntity.ok(userProfileService.findUserProfileByLogin(login));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or #userId eq principal")
-    @PutMapping("/{userId}/profile")
-    public ResponseEntity<UserProfileDto> updateUserProfile(@PathVariable UUID userId,
+    @PreAuthorize("hasRole('ADMIN') or #login eq authentication.details.username" +
+            " or #login eq authentication.details.email")
+    @PutMapping("/{login}/profile")
+    public ResponseEntity<UserProfileDto> updateUserProfile(@PathVariable String login,
                                                             @RequestBody UserProfileDto userProfileDto) {
-        return ResponseEntity.ok(userProfileService.updateUserProfile(userId, userProfileDto));
+        return ResponseEntity.ok(userProfileService.updateUserProfile(login, userProfileDto));
     }
 }

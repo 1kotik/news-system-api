@@ -3,6 +3,7 @@ package by.kotik.userservice.controller;
 import by.kotik.userservice.dto.PasswordDto;
 import by.kotik.userservice.dto.UserDto;
 import by.kotik.userservice.service.UserService;
+import dto.TokenDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -32,10 +33,11 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserByLogin(login));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or #userId eq principal")
-    @PatchMapping("/username/{userId}")
-    public ResponseEntity<UserDto> changeUsername(@PathVariable UUID userId, @RequestParam String newUsername) {
-        return ResponseEntity.ok(userService.changeUsername(userId, newUsername));
+    @PreAuthorize("hasRole('ADMIN') or #login eq authentication.details.username" +
+            " or #login eq authentication.details.email")
+    @PatchMapping("/username/{login}")
+    public ResponseEntity<TokenDto> changeUsername(@PathVariable String login, @RequestParam String newUsername) {
+        return ResponseEntity.ok(userService.changeUsername(login, newUsername));
     }
 
     @PreAuthorize("hasRole('ADMIN') or #userId eq principal")

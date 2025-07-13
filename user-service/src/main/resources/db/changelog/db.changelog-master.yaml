@@ -13,3 +13,5 @@ databaseChangeLog:
       file: db/changelog/changeset/set-default-value-role-id.yaml
   - include:
       file: db/changelog/changeset/add-profile-id-in-profiles-table.yaml
+  - include:
+      file: db/changelog/changeset/set-cascade-delete-profiles-table.yaml

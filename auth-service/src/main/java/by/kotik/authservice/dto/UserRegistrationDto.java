@@ -8,18 +8,18 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-@PasswordsMatch
+@PasswordsMatch(message = "Passwords do not match")
 public class UserRegistrationDto {
-    @Email
-    @NotBlank
+    @Email(message = "Invalid email")
+    @NotBlank(message = "Provide email")
     private String email;
 
     @NotBlank
-    @Size(min = 4)
-    @Username
+    @Size(min = 4, message = "Invalid username. Size must be at least 4 characters")
+    @Username(message = "Invalid username. Should consist of letters, digits and '_'")
     private String username;
 
-    @Size(min = 8)
+    @Size(min = 8, message = "Invalid password. Size must be at least 8 characters")
     private String password;
 
     private String confirmPassword;

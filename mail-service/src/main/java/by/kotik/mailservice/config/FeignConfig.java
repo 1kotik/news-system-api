@@ -1,4 +1,4 @@
-package by.kotik.authservice.config;
+package by.kotik.mailservice.config;
 
 import dto.TokenDto;
 import feign.RequestInterceptor;
@@ -17,7 +17,7 @@ public class FeignConfig {
     @Bean
     public RequestInterceptor requestInterceptor() {
         return requestTemplate -> {
-            TokenDto token = jwtUtils.insertAuthorities(null, List.of("AUTH_SERVICE"),
+            TokenDto token = jwtUtils.insertAuthorities(null, List.of("MAIL_SERVICE"),
                     Duration.ofMinutes(5));
             requestTemplate.header("X-Authorities", token.getToken());
         };
