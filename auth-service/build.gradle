@@ -48,6 +48,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation:3.5.3")
     implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
     implementation 'by.kotik:news-api-shared:1.0.0'
+    implementation("org.springframework.boot:spring-boot-starter-aop:3.5.3")
 }
 
 dependencyManagement {
