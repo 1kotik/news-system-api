@@ -6,6 +6,8 @@ eureka:
       defaultZone: http://localhost:8081/eureka
 jwt:
   secret: ${JWT_SECRET}
+frontend:
+  url: ${FRONTEND_URL}
 spring:
   config:
     import: optional:.env[.properties]

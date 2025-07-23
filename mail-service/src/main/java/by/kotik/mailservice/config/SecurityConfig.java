@@ -1,7 +1,6 @@
 package by.kotik.mailservice.config;
 
 import by.kotik.mailservice.filter.ConfirmationCodeExtractionFilter;
-import filter.UserInfoExtractionFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,5 +31,4 @@ public class SecurityConfig {
     public JwtUtils jwtUtils() {
         return new JwtUtils(secret);
     }
-
 }

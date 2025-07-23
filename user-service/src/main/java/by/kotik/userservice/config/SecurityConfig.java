@@ -31,5 +31,4 @@ public class SecurityConfig {
     public JwtUtils jwtUtils() {
         return new JwtUtils(secret);
     }
-
 }

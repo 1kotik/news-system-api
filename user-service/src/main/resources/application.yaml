@@ -32,3 +32,5 @@ logging:
       file-name-pattern: logs/user-service-%d{yyyy-MM-dd}.%i.log
   level:
     by.kotik: info
+frontend:
+  url: ${FRONTEND_URL}
