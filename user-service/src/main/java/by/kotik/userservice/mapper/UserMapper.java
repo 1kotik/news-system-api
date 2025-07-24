@@ -2,6 +2,7 @@ package by.kotik.userservice.mapper;
 
 import by.kotik.userservice.dto.UserCreationDto;
 import by.kotik.userservice.dto.UserDto;
+import by.kotik.userservice.dto.UserInformationDto;
 import by.kotik.userservice.entity.Role;
 import by.kotik.userservice.entity.User;
 import dto.UserAuthorizationDto;
@@ -29,6 +30,8 @@ public interface UserMapper {
 
     @Mapping(source = "roles", target = "roles", qualifiedByName = "mapRoleToString")
     UserAuthorizationDto userToUserAuthorizationDto(User user);
+
+    UserInformationDto userToUserInformationDto(User user);
 
     @Named("mapRoleToString")
     default List<String> mapRoleToString(List<Role> roles) {

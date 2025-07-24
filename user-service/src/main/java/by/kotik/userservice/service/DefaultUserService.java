@@ -2,6 +2,7 @@ package by.kotik.userservice.service;
 
 import by.kotik.userservice.dto.PasswordDto;
 import by.kotik.userservice.dto.UserDto;
+import by.kotik.userservice.dto.UserInformationDto;
 import by.kotik.userservice.entity.User;
 import by.kotik.userservice.exception.UsernameAlreadyExistsException;
 import by.kotik.userservice.mapper.UserMapper;
@@ -27,17 +28,17 @@ public class DefaultUserService implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public UserDto getUserById(UUID userId) {
+    public UserInformationDto getUserInformationById(UUID userId) {
         return userRepository.findById(userId)
-                .map(userMapper::userToUserDto)
+                .map(userMapper::userToUserInformationDto)
                 .orElseThrow(() -> new UserNotFoundException(userId.toString()));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public UserDto getUserByLogin(String login) {
+    public UserInformationDto getUserByLogin(String login) {
         return userRepository.findByLogin(login)
-                .map(userMapper::userToUserDto)
+                .map(userMapper::userToUserInformationDto)
                 .orElseThrow(() -> new UserNotFoundException(login));
     }
 

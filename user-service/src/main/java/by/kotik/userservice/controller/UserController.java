@@ -2,6 +2,7 @@ package by.kotik.userservice.controller;
 
 import by.kotik.userservice.dto.PasswordDto;
 import by.kotik.userservice.dto.UserDto;
+import by.kotik.userservice.dto.UserInformationDto;
 import by.kotik.userservice.service.UserService;
 import dto.TokenDto;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
 import java.util.UUID;
 
 @RestController
@@ -23,13 +25,8 @@ import java.util.UUID;
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("/id/{userId}")
-    public ResponseEntity<UserDto> getUserById(@PathVariable UUID userId) {
-        return ResponseEntity.ok(userService.getUserById(userId));
-    }
-
     @GetMapping("/{login}")
-    public ResponseEntity<UserDto> getUserByLogin(@PathVariable String login) {
+    public ResponseEntity<UserInformationDto> getUserByLogin(@PathVariable String login) {
         return ResponseEntity.ok(userService.getUserByLogin(login));
     }
 
@@ -44,6 +41,12 @@ public class UserController {
     @PatchMapping("/password/{userId}")
     public ResponseEntity<UserDto> changePassword(@PathVariable UUID userId, @RequestBody PasswordDto passwordDto) {
         return ResponseEntity.ok(userService.changePassword(userId, passwordDto));
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<UserInformationDto> getCurrentUser(Principal principal) {
+        UUID userId = UUID.fromString(principal.getName());
+        return ResponseEntity.ok(userService.getUserInformationById(userId));
     }
 
 }
