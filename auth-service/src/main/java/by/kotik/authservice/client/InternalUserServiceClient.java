@@ -1,6 +1,7 @@
 package by.kotik.authservice.client;
 
 import by.kotik.authservice.config.FeignConfig;
+import dto.UserAuthenticationDto;
 import dto.UserAuthorizationDto;
 import dto.UserDetailsDto;
 import dto.UserRegistrationTransitiveDto;
@@ -16,4 +17,6 @@ public interface InternalUserServiceClient {
     UserDetailsDto getUserDetailsByLogin(@PathVariable String login);
     @PostMapping("/users/internal")
     UserAuthorizationDto createUser(@RequestBody UserRegistrationTransitiveDto registrationDto);
+    @PostMapping("/users/internal/change-password")
+    UserAuthorizationDto changePassword(@RequestBody UserAuthenticationDto userAuthenticationDto);
 }

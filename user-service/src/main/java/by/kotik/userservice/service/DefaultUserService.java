@@ -13,6 +13,7 @@ import exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import util.JwtUtils;
 
 import java.time.Duration;
@@ -68,5 +69,4 @@ public class DefaultUserService implements UserService {
         user.setPassword(passwordDto.getPassword());
         return userMapper.userToUserDto(userRepository.save(user));
     }
-
 }

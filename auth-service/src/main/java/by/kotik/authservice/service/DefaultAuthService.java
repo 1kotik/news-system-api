@@ -1,10 +1,11 @@
 package by.kotik.authservice.service;
 
+import by.kotik.authservice.dto.ChangePasswordDto;
 import by.kotik.authservice.dto.CustomUserDetails;
-import by.kotik.authservice.dto.UserAuthenticationDto;
 import by.kotik.authservice.dto.UserRegistrationDto;
 import by.kotik.authservice.mapper.UserMapper;
 import dto.TokenDto;
+import dto.UserAuthenticationDto;
 import dto.UserAuthorizationDto;
 import exception.GenericAuthenticationException;
 import lombok.RequiredArgsConstructor;
@@ -25,15 +26,8 @@ public class DefaultAuthService implements AuthService {
 
     @Override
     public TokenDto login(UserAuthenticationDto userAuthenticationDto) {
-        CustomUserDetails userDetails;
-        try {
-            Authentication authentication = authenticationManager
-                    .authenticate(new UsernamePasswordAuthenticationToken(userAuthenticationDto.getLogin(),
-                                                                          userAuthenticationDto.getPassword()));
-            userDetails = (CustomUserDetails) authentication.getPrincipal();
-        } catch (Exception e) {
-            throw new GenericAuthenticationException("Invalid Credentials.");
-        }
+        CustomUserDetails userDetails = authenticate(userAuthenticationDto.getLogin(),
+                                                        userAuthenticationDto.getPassword());
         return jwtService.generateToken(userMapper.customUserDetailsDtoToUserAuthorizationDto(userDetails));
     }
 
@@ -43,4 +37,28 @@ public class DefaultAuthService implements AuthService {
         UserAuthorizationDto createdUser = userDetailsService.createUser(userMapper.toTransitiveDto(userRegistrationDto));
         return jwtService.generateToken(createdUser);
     }
+
+    @Override
+    public TokenDto changePassword(ChangePasswordDto changePasswordDto, UserAuthorizationDto userAuthorizationDto) {
+        authenticate(userAuthorizationDto.getEmail(), changePasswordDto.getOldPassword());
+        String newPassword = passwordEncoder.encode(changePasswordDto.getPassword());
+
+        UserAuthorizationDto updatedUser = userDetailsService
+                .changePassword(userAuthorizationDto.getEmail(), newPassword);
+
+        return jwtService.generateToken(updatedUser);
+    }
+
+    private CustomUserDetails authenticate(String login, String password) {
+        CustomUserDetails userDetails;
+        try {
+            Authentication authentication = authenticationManager
+                    .authenticate(new UsernamePasswordAuthenticationToken(login, password));
+            userDetails = (CustomUserDetails) authentication.getPrincipal();
+        } catch (Exception e) {
+            throw new GenericAuthenticationException("Invalid Credentials.");
+        }
+        return userDetails;
+    }
+
 }

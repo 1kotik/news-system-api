@@ -3,6 +3,7 @@ package by.kotik.userservice.controller;
 import by.kotik.userservice.dto.UserCreationDto;
 import by.kotik.userservice.mapper.UserMapper;
 import by.kotik.userservice.service.InternalUserService;
+import dto.UserAuthenticationDto;
 import dto.UserAuthorizationDto;
 import dto.UserDetailsDto;
 import dto.UserRegistrationTransitiveDto;
@@ -39,5 +40,11 @@ public class InternalUserController {
     public UserAuthorizationDto createUser(@RequestBody UserRegistrationTransitiveDto transitiveDto) {
         UserCreationDto userCreationDto = userMapper.transitiveDtoToUserCreationDto(transitiveDto);
         return internalUserService.createUser(userCreationDto);
+    }
+
+    @PreAuthorize("hasAuthority('AUTH_SERVICE')")
+    @PostMapping("/change-password")
+    public UserAuthorizationDto changePassword(@RequestBody UserAuthenticationDto userAuthenticationDto) {
+        return internalUserService.changePassword(userAuthenticationDto);
     }
 }

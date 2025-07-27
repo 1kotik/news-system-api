@@ -15,6 +15,13 @@ server:
   port: 8083
 jwt:
   secret: ${JWT_SECRET}
+file-storage:
+  local:
+    service:
+      path: ${LOCAL_STORAGE_PATH}
+  google:
+    service:
+      path: ${GOOGLE_SERVICE_ACCOUNT_KEY_PATH}
 eureka:
   client:
     service-url:

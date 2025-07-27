@@ -4,6 +4,7 @@ import by.kotik.userservice.dto.PasswordDto;
 import by.kotik.userservice.dto.UserDto;
 import by.kotik.userservice.dto.UserInformationDto;
 import dto.TokenDto;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
 

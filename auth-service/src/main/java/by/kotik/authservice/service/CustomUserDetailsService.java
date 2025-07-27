@@ -6,4 +6,5 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface CustomUserDetailsService extends UserDetailsService {
     UserAuthorizationDto createUser(UserRegistrationTransitiveDto userRegistrationDto);
+    UserAuthorizationDto changePassword(String login, String newPassword);
 }

@@ -4,8 +4,10 @@ import by.kotik.userservice.dto.UserCreationDto;
 import by.kotik.userservice.entity.User;
 import by.kotik.userservice.mapper.UserMapper;
 import by.kotik.userservice.repository.UserRepository;
+import dto.UserAuthenticationDto;
 import dto.UserAuthorizationDto;
 import dto.UserDetailsDto;
+import exception.UserNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -44,6 +46,17 @@ public class DefaultInternalUserService implements InternalUserService {
         User user = userMapper.userCreationDtoToUser(userCreationDto);
         user.setRoles(new ArrayList<>(List.of(roleService.getRoleByName("ROLE_USER"))));
         user.getUserProfile().setUser(user);
+
+        User savedUser = userRepository.save(user);
+
+        return userMapper.userToUserAuthorizationDto(savedUser);
+    }
+
+    @Override
+    public UserAuthorizationDto changePassword(UserAuthenticationDto userAuthenticationDto) {
+        User user = userRepository.findByLogin(userAuthenticationDto.getLogin())
+                .orElseThrow(() -> new UserNotFoundException(userAuthenticationDto.getLogin()));
+        user.setPassword(userAuthenticationDto.getPassword());
 
         User savedUser = userRepository.save(user);
 

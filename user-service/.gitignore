@@ -39,3 +39,4 @@ out/
 /build
 /.gradle
 src/main/resources/.env
+/src/main/resources/google

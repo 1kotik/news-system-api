@@ -2,6 +2,7 @@ package by.kotik.authservice.service;
 
 import by.kotik.authservice.client.InternalUserServiceClient;
 import by.kotik.authservice.mapper.UserMapper;
+import dto.UserAuthenticationDto;
 import dto.UserAuthorizationDto;
 import dto.UserDetailsDto;
 import dto.UserRegistrationTransitiveDto;
@@ -28,5 +29,10 @@ public class DefaultCustomUserDetailsService implements CustomUserDetailsService
     @Override
     public UserAuthorizationDto createUser(UserRegistrationTransitiveDto registrationTransitiveDto) {
         return internalUserServiceClient.createUser(registrationTransitiveDto);
+    }
+
+    @Override
+    public UserAuthorizationDto changePassword(String login, String newPassword) {
+        return internalUserServiceClient.changePassword(new UserAuthenticationDto(login, newPassword));
     }
 }
