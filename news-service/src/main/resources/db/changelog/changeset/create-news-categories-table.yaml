@@ -1,0 +1,32 @@
+databaseChangeLog:
+  - changeSet:
+      author: kotik
+      id: create-news-categories-table
+      changes:
+        - createTable:
+            tableName: news_categories
+            columns:
+              - column:
+                  name: news_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: category_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: news_categories
+            referencedTableName: news
+            baseColumnNames: news_id
+            referencedColumnNames: news_id
+            constraintName: fk_news_categories_news
+            onDelete: cascade
+        - addForeignKeyConstraint:
+            baseTableName: news_categories
+            referencedTableName: categories
+            baseColumnNames: category_id
+            referencedColumnNames: category_id
+            constraintName: fk_news_categories_category
+            onDelete: cascade

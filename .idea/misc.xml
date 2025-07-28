@@ -8,6 +8,7 @@
     <file type="web" url="file://$PROJECT_DIR$/discovery-server" />
     <file type="web" url="file://$PROJECT_DIR$/mail-service" />
     <file type="web" url="file://$PROJECT_DIR$/news-api-shared" />
+    <file type="web" url="file://$PROJECT_DIR$/news-service" />
     <file type="web" url="file://$PROJECT_DIR$/user-service" />
   </component>
   <component name="ProjectRootManager" version="2" project-jdk-name="17" project-jdk-type="JavaSDK">

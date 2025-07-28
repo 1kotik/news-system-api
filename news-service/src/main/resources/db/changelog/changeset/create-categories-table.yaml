@@ -1,0 +1,21 @@
+databaseChangeLog:
+  - changeSet:
+      author: kotik
+      id: create-categories-table
+      changes:
+        - createTable:
+            tableName: categories
+            columns:
+              - column:
+                  name: category_id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    unique: true
+              - column:
+                  name: category_name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    unique: true
