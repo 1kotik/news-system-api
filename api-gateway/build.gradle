@@ -39,6 +39,8 @@ dependencies {
         exclude group: 'org.springframework', module: 'spring-web'
         exclude group: 'org.springframework', module: 'spring-webmvc'
         exclude group: 'jakarta.servlet', module: 'jakarta.servlet-api'
+        exclude group: 'com.google.api-client', module: 'google-api-client'
+        exclude group: 'com.google.apis', module: 'google-api-services-drive'
     }
     implementation("org.springframework.boot:spring-boot-starter-security:3.5.3")
 }

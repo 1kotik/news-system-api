@@ -7,9 +7,11 @@ import by.kotik.userservice.repository.UserProfileRepository;
 import exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import service.FileStorageService;
 
 @RequiredArgsConstructor
 @Service
@@ -18,6 +20,8 @@ public class DefaultUserProfileService implements UserProfileService {
     private final UserProfileMapper userProfileMapper;
     @Qualifier("localFileStorageService")
     private final FileStorageService fileStorageService;
+    @Value("${file-storage.local.service.avatar-folder-name}")
+    private String avatarFolderName;
 
     @Override
     @Transactional(readOnly = true)
@@ -42,7 +46,7 @@ public class DefaultUserProfileService implements UserProfileService {
         UserProfile userProfile = userProfileRepository.findByLogin(login)
                 .orElseThrow(() -> new UserNotFoundException(login));
 
-        String avatarUrl = fileStorageService.uploadUserAvatar(file, login);
+        String avatarUrl = fileStorageService.uploadFile(file, avatarFolderName, login);
 
         userProfile.setAvatar(avatarUrl);
         userProfileRepository.save(userProfile);

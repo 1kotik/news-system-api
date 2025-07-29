@@ -18,9 +18,11 @@ jwt:
 file-storage:
   local:
     service:
+      avatar-folder-name: ${LOCAL_STORAGE_AVATAR_FOLDER_NAME}
       path: ${LOCAL_STORAGE_PATH}
   google:
     service:
+      avatar-folder-id: ${GOOGLE_SERVICE_AVATAR_FOLDER_ID}
       path: ${GOOGLE_SERVICE_ACCOUNT_KEY_PATH}
 eureka:
   client:

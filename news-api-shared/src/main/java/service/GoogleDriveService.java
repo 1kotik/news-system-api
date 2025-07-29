@@ -1,4 +1,4 @@
-package by.kotik.userservice.service;
+package service;
 
 import com.google.api.client.http.InputStreamContent;
 import com.google.api.services.drive.Drive;
@@ -13,17 +13,15 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.UUID;
 
-@Service
 @RequiredArgsConstructor
 public class GoogleDriveService implements FileStorageService {
     private final Drive drive;
-    private final String AVATAR_FOLDER_ID = "1evagQpJy5WfrXFOJ61iW26L3ZaNLC_Zf";
 
     @Override
-    public String uploadUserAvatar(MultipartFile file, String login) {
+    public String uploadFile(MultipartFile file, String directory, String id) {
         File metadata = new File();
-        metadata.setName("avatar" + UUID.randomUUID());
-        metadata.setParents(Collections.singletonList(AVATAR_FOLDER_ID));
+        metadata.setName(id);
+        metadata.setParents(Collections.singletonList(directory));
 
         File fileToUpload;
         try {
