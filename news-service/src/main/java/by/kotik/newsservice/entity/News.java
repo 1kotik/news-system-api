@@ -12,6 +12,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -56,7 +57,11 @@ public class News {
     @JoinTable(name = "news_categories",
             joinColumns = @JoinColumn(name = "news_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private List<Category> categories = new ArrayList<>();
     @OneToMany(mappedBy = "news")
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private List<Like> likes = new ArrayList<>();
 }

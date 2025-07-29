@@ -101,4 +101,11 @@ public class DefaultNewsService implements NewsService {
 
         newsRepository.delete(news);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public News findById(UUID newsId) {
+        return newsRepository.findById(newsId)
+                .orElseThrow(() -> new NewsNotFoundException(newsId));
+    }
 }
