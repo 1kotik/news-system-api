@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      author: kotik
+      id: add-like-type-to-likes-table
+      changes:
+        - addColumn:
+            tableName: likes
+            columns:
+              - column:
+                  name: like_type
+                  type: varchar(10)
+                  constraints:
+                    nullable: false

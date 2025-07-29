@@ -34,4 +34,8 @@ spring:
               uri: lb://auth-service
               predicates:
                 - Path=/auth/**
+            - id: news-service
+              uri: lb://news-service
+              predicates:
+                - Path=/news/**
 

@@ -1,0 +1,32 @@
+databaseChangeLog:
+  - changeSet:
+      author: kotik
+      id: create-likes-table
+      changes:
+        - createTable:
+            tableName: likes
+            columns:
+              - column:
+                  name: like_id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    unique: true
+              - column:
+                  name: news_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: likes
+            baseColumnNames: news_id
+            referencedTableName: news
+            referencedColumnNames: news_id
+            constraintName: fk_likes_news
+            onDelete: cascade

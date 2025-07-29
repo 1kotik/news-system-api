@@ -5,3 +5,7 @@ databaseChangeLog:
       file: db/changelog/changeset/create-categories-table.yaml
   - include:
       file: db/changelog/changeset/create-news-categories-table.yaml
+  - include:
+      file: db/changelog/changeset/create-likes-table.yaml
+  - include:
+      file: db/changelog/changeset/add-like-type-to-likes-table.yaml

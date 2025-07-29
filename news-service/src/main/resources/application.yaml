@@ -18,6 +18,7 @@ jwt:
 file-storage:
   local:
     service:
+      preview-image-folder-name: ${LOCAL_STORAGE_PREVIEW_IMAGE_FOLDER_NAME}
       path: ${LOCAL_STORAGE_PATH}
 eureka:
   client:

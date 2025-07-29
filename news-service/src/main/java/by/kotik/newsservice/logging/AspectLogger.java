@@ -13,17 +13,24 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class AspectLogger {
     @Pointcut("within(by.kotik.newsservice.service.*)")
-    public void isServiceLayer(){}
+    public void isServiceLayer() {
+    }
+
     @Pointcut("within(by.kotik.newsservice.controller.*)")
-    public void isControllerLayer(){}
+    public void isControllerLayer() {
+    }
 
     @AfterReturning(value = "isServiceLayer() || isControllerLayer()", returning = "result")
-    public void logAfterReturning(JoinPoint joinPoint, Object result){
-        log.info("Invoked {}. Returned: {}", joinPoint.getSignature().getName(), result.toString());
+    public void logAfterReturning(JoinPoint joinPoint, Object result) {
+        if (result != null) {
+            log.info("Invoked {}. Returned: {}", joinPoint.getSignature().getName(), result.toString());
+        } else {
+            log.info("Invoked {}. Returned void", joinPoint.getSignature().getName());
+        }
     }
 
     @AfterThrowing(value = "isServiceLayer() || isControllerLayer()", throwing = "ex")
-    public void logAfterThrowing(JoinPoint joinPoint, Throwable ex){
+    public void logAfterThrowing(JoinPoint joinPoint, Throwable ex) {
         log.error("Invoked {}. Thrown: {}. Message {}",
                 joinPoint.getSignature().getName(), ex.getClass(), ex.getMessage());
     }
