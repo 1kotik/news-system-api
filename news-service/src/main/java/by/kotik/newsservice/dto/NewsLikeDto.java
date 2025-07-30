@@ -9,7 +9,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LikeDto {
+public class NewsLikeDto {
     private UUID likeId;
     private UUID userId;
     private UUID newsId;

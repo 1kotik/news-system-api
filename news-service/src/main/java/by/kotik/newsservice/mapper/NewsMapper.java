@@ -6,7 +6,7 @@ import by.kotik.newsservice.entity.News;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
-@Mapper(componentModel = "spring", uses = {LikeMapper.class, CategoryMapper.class})
+@Mapper(componentModel = "spring", uses = {NewsLikeMapper.class, CategoryMapper.class})
 public interface NewsMapper {
     NewsDto toDto(News news);
 

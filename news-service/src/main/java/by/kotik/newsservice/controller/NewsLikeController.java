@@ -1,8 +1,7 @@
 package by.kotik.newsservice.controller;
 
-import by.kotik.newsservice.dto.LikeRequest;
-import by.kotik.newsservice.helpers.enums.LikeType;
-import by.kotik.newsservice.service.LikeService;
+import by.kotik.newsservice.service.NewsLikeService;
+import dto.LikeRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,14 +17,14 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/news/like")
-public class LikeController {
-    private final LikeService likeService;
+public class NewsLikeController {
+    private final NewsLikeService newsLikeService;
 
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/{newsId}")
     public ResponseEntity<Void> likeNews(@PathVariable UUID newsId,
                                          @RequestBody LikeRequest likeRequest) {
-        likeService.likeNews(newsId, likeRequest);
+        newsLikeService.likeNews(newsId, likeRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

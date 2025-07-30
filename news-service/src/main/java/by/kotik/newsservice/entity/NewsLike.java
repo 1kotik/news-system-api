@@ -1,6 +1,6 @@
 package by.kotik.newsservice.entity;
 
-import by.kotik.newsservice.helpers.enums.LikeType;
+import enums.LikeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -28,7 +28,7 @@ import java.util.UUID;
 @Setter
 @Getter
 @ToString
-public class Like {
+public class NewsLike {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "like_id", nullable = false, unique = true)
@@ -43,7 +43,7 @@ public class Like {
     @Enumerated(value = EnumType.STRING)
     private LikeType likeType;
 
-    public Like(UUID userId, News news, LikeType likeType) {
+    public NewsLike(UUID userId, News news, LikeType likeType) {
         this.userId = userId;
         this.news = news;
         this.likeType = likeType;

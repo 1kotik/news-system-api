@@ -1,6 +1,6 @@
-package by.kotik.newsservice.dto;
+package dto;
 
-import by.kotik.newsservice.helpers.enums.LikeType;
+import enums.LikeType;
 import lombok.Data;
 
 @Data

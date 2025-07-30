@@ -1,4 +1,4 @@
-package by.kotik.newsservice.helpers.enums;
+package enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.AllArgsConstructor;

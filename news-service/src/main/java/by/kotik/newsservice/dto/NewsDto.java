@@ -23,5 +23,5 @@ public class NewsDto {
     private int dislikesCount;
     private int commentsCount;
     private List<CategoryDto> categories = new ArrayList<>();
-    private List<LikeDto> likes = new ArrayList<>();
+    private List<NewsLikeDto> likes = new ArrayList<>();
 }
