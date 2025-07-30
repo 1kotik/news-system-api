@@ -1,0 +1,37 @@
+databaseChangeLog:
+  - changeSet:
+      author: kotik
+      id: create-comment-likes-table
+      changes:
+        - createTable:
+            tableName: comment_likes
+            columns:
+              - column:
+                  name: like_id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    unique: true
+              - column:
+                  name: comment_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: like_type
+                  type: varchar(10)
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: comment_likes
+            referencedTableName: comments
+            baseColumnNames: comment_id
+            referencedColumnNames: comment_id
+            constraintName: fk_comment_likes_comment
+            onDelete: cascade

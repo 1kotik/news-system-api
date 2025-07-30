@@ -38,4 +38,8 @@ spring:
               uri: lb://news-service
               predicates:
                 - Path=/news/**
+            - id: comment-service
+              uri: lb://comment-service
+              predicates:
+                - Path=/comments/**
 

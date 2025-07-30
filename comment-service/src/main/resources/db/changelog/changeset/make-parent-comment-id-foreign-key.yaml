@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      author: kotik
+      id: make-parent-comment-id-foreign-key
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: comments
+            referencedTableName: comments
+            baseColumnNames: parent_comment_id
+            referencedColumnNames: comment_id
+            constraintName: fk_comments_parent_comment_id
+            onDelete: set null

@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/changeset/create-comments-table.yaml
+  - include:
+      file: db/changelog/changeset/create-comment-likes-table.yaml
+  - include:
+      file: db/changelog/changeset/make-parent-comment-id-foreign-key.yaml
+

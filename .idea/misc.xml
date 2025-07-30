@@ -5,6 +5,7 @@
     <file type="web" url="file://$PROJECT_DIR$/../java_practice/poll-system-api/poll-api-common" />
     <file type="web" url="file://$PROJECT_DIR$/api-gateway" />
     <file type="web" url="file://$PROJECT_DIR$/auth-service" />
+    <file type="web" url="file://$PROJECT_DIR$/comment-service" />
     <file type="web" url="file://$PROJECT_DIR$/discovery-server" />
     <file type="web" url="file://$PROJECT_DIR$/mail-service" />
     <file type="web" url="file://$PROJECT_DIR$/news-api-shared" />

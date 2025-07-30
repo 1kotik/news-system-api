@@ -1,0 +1,50 @@
+databaseChangeLog:
+  - changeSet:
+      author: kotik
+      id: create-comments-table
+      changes:
+        - createTable:
+            tableName: comments
+            columns:
+              - column:
+                  name: comment_id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    unique: true
+              - column:
+                  name: news_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: parent_comment_id
+                  type: uuid
+                  constraints:
+                    nullable: true
+              - column:
+                  name: content
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp with time zone
+                  constraints:
+                    nullable: false
+              - column:
+                  name: likes_count
+                  type: integer
+                  constraints:
+                    nullable: false
+              - column:
+                  name: dislikes_count
+                  type: integer
+                  constraints:
+                    nullable: false

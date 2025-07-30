@@ -1,0 +1,38 @@
+spring:
+  config:
+    import: optional:.env[.properties]
+  liquibase:
+    enabled: true
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  application:
+    name: comment-service
+server:
+  port: 8087
+jwt:
+  secret: ${JWT_SECRET}
+file-storage:
+  local:
+    service:
+      path: ${LOCAL_STORAGE_PATH}
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8081/eureka
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} %clr(%-5level) %clr(%logger{36}){cyan} - %clr(%msg%n){faint}"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: logs/comment-service.log
+  logback:
+    rolling policy:
+      max-file-size: 10MB
+      max-history: 30
+      file-name-pattern: logs/comment-service-%d{yyyy-MM-dd}.%i.log
+  level:
+    by.kotik: info

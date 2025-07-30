@@ -1,4 +1,4 @@
-package by.kotik.newsservice.config;
+package by.kotik.commentservice.config;
 
 import dto.UserAuthorizationDto;
 import filter.UserInfoExtractionFilter;
