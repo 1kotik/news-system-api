@@ -14,4 +14,6 @@ public interface NewsService {
     NewsDto updateNews(NewsContentDto newsContentDto, UUID newsId, List<UUID> categoryIds, MultipartFile previewImage);
     void deleteNews(UUID newsId);
     News findById(UUID newsId);
+    void changeCommentCount(UUID newsId, boolean increment);
+    NewsDto findDtoById(UUID newsId);
 }

@@ -63,4 +63,10 @@ public class NewsController {
         newsService.deleteNews(newsId);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/{newsId}")
+    public ResponseEntity<NewsDto> findById(@PathVariable UUID newsId) {
+        NewsDto newsDto = newsService.findDtoById(newsId);
+        return ResponseEntity.ok(newsDto);
+    }
 }

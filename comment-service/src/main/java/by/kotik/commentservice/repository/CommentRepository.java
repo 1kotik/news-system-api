@@ -16,4 +16,5 @@ public interface CommentRepository extends JpaRepository<Comment, UUID> {
     @Query("select c from Comment c where c.parentComment is null")
     List<Comment> findAllParents();
     Optional<Comment> findByCommentIdAndNewsId(UUID commentId, UUID newsId);
+    void deleteByNewsId(UUID newsId);
 }

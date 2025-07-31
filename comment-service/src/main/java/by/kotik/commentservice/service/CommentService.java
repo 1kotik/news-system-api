@@ -14,4 +14,5 @@ public interface CommentService {
     CommentDto update(CommentContentDto commentContentDto, UUID commentId);
     void delete(UUID commentId);
     Comment findById(UUID commentId);
+    void deleteByNewsId(UUID newsId);
 }

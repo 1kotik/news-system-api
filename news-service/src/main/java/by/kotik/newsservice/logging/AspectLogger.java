@@ -20,16 +20,21 @@ public class AspectLogger {
     public void isControllerLayer() {
     }
 
-    @AfterReturning(value = "isServiceLayer() || isControllerLayer()", returning = "result")
+    @Pointcut("within(by.kotik.newsservice.listener.*)")
+    public void isListenerLayer() {}
+
+    @AfterReturning(value = "isServiceLayer() || isControllerLayer() || isListenerLayer()",
+            returning = "result")
     public void logAfterReturning(JoinPoint joinPoint, Object result) {
         if (result != null) {
-            log.info("Invoked {}. Returned: {}", joinPoint.getSignature().getName(), result.toString());
+            log.info("Invoked {}. Returned: {}", joinPoint.getSignature().getName(), result);
         } else {
             log.info("Invoked {}. Returned void", joinPoint.getSignature().getName());
         }
     }
 
-    @AfterThrowing(value = "isServiceLayer() || isControllerLayer()", throwing = "ex")
+    @AfterThrowing(value = "isServiceLayer() || isControllerLayer() || isListenerLayer()",
+            throwing = "ex")
     public void logAfterThrowing(JoinPoint joinPoint, Throwable ex) {
         log.error("Invoked {}. Thrown: {}. Message {}",
                 joinPoint.getSignature().getName(), ex.getClass(), ex.getMessage());

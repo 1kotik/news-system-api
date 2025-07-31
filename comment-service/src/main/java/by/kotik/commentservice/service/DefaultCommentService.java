@@ -8,7 +8,10 @@ import by.kotik.commentservice.exception.UnauthorizedCommentModifyingException;
 import by.kotik.commentservice.mapper.CommentMapper;
 import by.kotik.commentservice.repository.CommentRepository;
 import dto.UserAuthorizationDto;
+import event.CommentCreatedOrDeletedEvent;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +24,10 @@ public class DefaultCommentService implements CommentService {
     private final CommentRepository commentRepository;
     private final CommentMapper commentMapper;
     private final UserAuthorizationDto userAuthorizationDto;
+    private final KafkaTemplate<UUID, Object> kafkaTemplate;
+
+    @Value("${kafka.topic.comment-created-or-deleted-topic-name}")
+    private String commentCreatedOrDeletedTopicName;
 
     @Override
     @Transactional(readOnly = true)
@@ -56,7 +63,10 @@ public class DefaultCommentService implements CommentService {
         comment.setUserId(userId);
         comment.setParentComment(parentComment);
 
-        commentRepository.save(comment);
+        comment = commentRepository.save(comment);
+
+        kafkaTemplate.send(commentCreatedOrDeletedTopicName, comment.getCommentId(),
+                new CommentCreatedOrDeletedEvent(comment.getNewsId(), comment.getCommentId(), true));
 
         return commentMapper.toDto(comment);
     }
@@ -84,6 +94,9 @@ public class DefaultCommentService implements CommentService {
         checkIfModifyingIsAuthorized(comment);
 
         commentRepository.delete(comment);
+
+        kafkaTemplate.send(commentCreatedOrDeletedTopicName, comment.getCommentId(),
+                new CommentCreatedOrDeletedEvent(comment.getNewsId(), comment.getCommentId(), false));
     }
 
     @Override
@@ -91,6 +104,12 @@ public class DefaultCommentService implements CommentService {
     public Comment findById(UUID commentId) {
         return commentRepository.findById(commentId)
                 .orElseThrow(() -> new CommentNotFoundException(commentId));
+    }
+
+    @Override
+    @Transactional
+    public void deleteByNewsId(UUID newsId) {
+        commentRepository.deleteByNewsId(newsId);
     }
 
     void checkIfModifyingIsAuthorized(Comment comment) {

@@ -9,8 +9,10 @@ import by.kotik.newsservice.exception.UnauthorizedNewsModifyingException;
 import by.kotik.newsservice.mapper.NewsMapper;
 import by.kotik.newsservice.repository.NewsRepository;
 import dto.UserAuthorizationDto;
+import event.NewsDeletedEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,8 +29,12 @@ public class DefaultNewsService implements NewsService {
     private final UserAuthorizationDto userAuthorizationDto;
     private final CategoryService categoryService;
     private final FileStorageService fileStorageService;
+    private final KafkaTemplate<UUID, Object> newsDeletedEventKafkaTemplate;
+
     @Value("${file-storage.local.service.preview-image-folder-name}")
     private String previewImageFolderName;
+    @Value("${kafka.topic.news-deleted-topic-name}")
+    private String newsDeletedTopicName;
 
     @Override
     @Transactional(readOnly = true)
@@ -46,7 +52,7 @@ public class DefaultNewsService implements NewsService {
         UUID userId = userAuthorizationDto.getUserId();
         List<Category> categories = categoryService.findByCategoryIds(categoryIds);
 
-        if(previewImage != null) {
+        if (previewImage != null) {
             String previewImageUrl = fileStorageService.uploadFile(previewImage,
                     previewImageFolderName,
                     UUID.randomUUID().toString());
@@ -70,11 +76,11 @@ public class DefaultNewsService implements NewsService {
         UUID userId = userAuthorizationDto.getUserId();
         List<Category> categories = categoryService.findByCategoryIds(categoryIds);
 
-        if(!news.getAuthorId().equals(userId)) {
+        if (!news.getAuthorId().equals(userId)) {
             throw new UnauthorizedNewsModifyingException(newsId, userId);
         }
 
-        if(previewImage != null) {
+        if (previewImage != null) {
             String previewImageUrl = fileStorageService.uploadFile(previewImage,
                     previewImageFolderName,
                     news.getNewsId().toString());
@@ -95,17 +101,46 @@ public class DefaultNewsService implements NewsService {
                 .orElseThrow(() -> new NewsNotFoundException(newsId));
         UUID userId = userAuthorizationDto.getUserId();
 
-        if(!news.getAuthorId().equals(userId)) {
+        if (!news.getAuthorId().equals(userId)) {
             throw new UnauthorizedNewsModifyingException(newsId, userId);
         }
 
         newsRepository.delete(news);
+
+        newsDeletedEventKafkaTemplate.send(newsDeletedTopicName, newsId,
+                new NewsDeletedEvent(newsId));
     }
 
     @Override
     @Transactional(readOnly = true)
     public News findById(UUID newsId) {
         return newsRepository.findById(newsId)
+                .orElseThrow(() -> new NewsNotFoundException(newsId));
+    }
+
+    @Override
+    @Transactional
+    public void changeCommentCount(UUID newsId, boolean increment) {
+        News news = newsRepository.findById(newsId)
+                .orElseThrow(() -> new NewsNotFoundException(newsId));
+
+        int commentsCount = news.getCommentsCount();
+
+        if (increment) {
+            commentsCount++;
+        } else {
+            commentsCount--;
+        }
+
+        news.setCommentsCount(commentsCount);
+
+        newsRepository.save(news);
+    }
+
+    @Override
+    public NewsDto findDtoById(UUID newsId) {
+        return newsRepository.findById(newsId)
+                .map(newsMapper::toDto)
                 .orElseThrow(() -> new NewsNotFoundException(newsId));
     }
 }

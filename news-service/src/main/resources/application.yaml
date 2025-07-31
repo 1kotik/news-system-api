@@ -11,8 +11,22 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   application:
     name: news-service
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: comment-created-or-deleted
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: event
+      auto-offset-reset: earliest
 server:
   port: 8086
+kafka:
+  topic:
+    news-deleted-topic-name: news-deleted
+    comment-created-or-deleted-topic-name: comment-created-or-deleted
 jwt:
   secret: ${JWT_SECRET}
 file-storage:
