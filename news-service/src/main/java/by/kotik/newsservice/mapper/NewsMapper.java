@@ -3,6 +3,7 @@ package by.kotik.newsservice.mapper;
 import by.kotik.newsservice.dto.NewsContentDto;
 import by.kotik.newsservice.dto.NewsDto;
 import by.kotik.newsservice.entity.News;
+import dto.NewsPreviewDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
@@ -13,4 +14,6 @@ public interface NewsMapper {
     News fromContentToEntity(NewsContentDto newsContentDto);
 
     void updateEntity(NewsContentDto newsContentDto, @MappingTarget News news);
+
+    NewsPreviewDto toNewsPreviewDto(News news);
 }

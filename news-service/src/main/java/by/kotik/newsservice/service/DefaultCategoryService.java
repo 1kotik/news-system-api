@@ -1,11 +1,11 @@
 package by.kotik.newsservice.service;
 
 import by.kotik.newsservice.dto.CategoryContentDto;
-import by.kotik.newsservice.dto.CategoryDto;
 import by.kotik.newsservice.entity.Category;
 import by.kotik.newsservice.exception.CategoryNotFoundException;
 import by.kotik.newsservice.mapper.CategoryMapper;
 import by.kotik.newsservice.repository.CategoryRepository;
+import dto.CategoryDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

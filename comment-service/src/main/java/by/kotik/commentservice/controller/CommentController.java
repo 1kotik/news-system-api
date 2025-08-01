@@ -39,9 +39,10 @@ public class CommentController {
 
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/{newsId}")
-    public ResponseEntity<CommentDto> create(@RequestBody CommentContentDto commentContentDto,
-                                             @PathVariable UUID newsId,
-                                             @RequestParam(name = "parentId", required = false) UUID parentCommentId) {
+    public ResponseEntity<CommentDto> create(
+            @RequestBody CommentContentDto commentContentDto,
+            @PathVariable UUID newsId,
+            @RequestParam(name = "parentId", required = false) UUID parentCommentId) {
         CommentDto commentDto = commentService.create(commentContentDto, newsId, parentCommentId);
         return ResponseEntity.ok(commentDto);
     }

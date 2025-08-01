@@ -2,7 +2,9 @@ package by.kotik.newsservice.controller;
 
 import by.kotik.newsservice.dto.NewsContentDto;
 import by.kotik.newsservice.dto.NewsDto;
+import by.kotik.newsservice.dto.NewsListResponseDto;
 import by.kotik.newsservice.service.NewsService;
+import dto.NewsPreviewDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -29,30 +31,31 @@ public class NewsController {
     private final NewsService newsService;
 
     @GetMapping
-    public ResponseEntity<List<NewsDto>> findAll() {
-        List<NewsDto> newsDtos = newsService.findAll();
-        return ResponseEntity.ok(newsDtos);
+    public ResponseEntity<NewsListResponseDto> findByCategories(
+            @RequestParam(name = "categoryId", required = false) List<UUID> categoryIds,
+            @RequestParam(name = "offset", defaultValue = "0") int offset,
+            @RequestParam(name = "limit", defaultValue = "10") int limit) {
+        NewsListResponseDto newsResponse = newsService.findByCategories(categoryIds, offset, limit);
+        return ResponseEntity.ok(newsResponse);
     }
 
     @PreAuthorize("hasRole('EDITOR') or hasRole('ADMIN')")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<NewsDto> createNews(@RequestPart(name = "content") @Valid NewsContentDto newsContentDto,
-                                              @RequestParam(name = "categoryId", required = false)
-                                              List<UUID> categoryIds,
-                                              @RequestPart(name = "previewImage", required = false)
-                                                  MultipartFile previewImage) {
+    public ResponseEntity<NewsDto> createNews(
+            @RequestPart(name = "content") @Valid NewsContentDto newsContentDto,
+            @RequestParam(name = "categoryId", required = false) List<UUID> categoryIds,
+            @RequestPart(name = "previewImage", required = false) MultipartFile previewImage) {
         NewsDto newsDto = newsService.createNews(newsContentDto, categoryIds, previewImage);
         return ResponseEntity.ok(newsDto);
     }
 
     @PreAuthorize("hasRole('EDITOR') or hasRole('ADMIN')")
     @PutMapping("/{newsId}")
-    public ResponseEntity<NewsDto> updateNews(@RequestPart(name = "content") @Valid NewsContentDto newsContentDto,
-                                              @PathVariable UUID newsId,
-                                              @RequestParam(name = "categoryId", required = false)
-                                                  List<UUID> categoryIds,
-                                              @RequestPart(name = "previewImage", required = false)
-                                                  MultipartFile previewImage) {
+    public ResponseEntity<NewsDto> updateNews(
+            @RequestPart(name = "content") @Valid NewsContentDto newsContentDto,
+            @PathVariable UUID newsId,
+            @RequestParam(name = "categoryId", required = false) List<UUID> categoryIds,
+            @RequestPart(name = "previewImage", required = false) MultipartFile previewImage) {
         NewsDto newsDto = newsService.updateNews(newsContentDto, newsId, categoryIds, previewImage);
         return ResponseEntity.ok(newsDto);
     }

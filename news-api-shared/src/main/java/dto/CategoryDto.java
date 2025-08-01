@@ -1,4 +1,4 @@
-package by.kotik.newsservice.dto;
+package dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,8 +1,8 @@
 package by.kotik.newsservice.controller;
 
 import by.kotik.newsservice.dto.CategoryContentDto;
-import by.kotik.newsservice.dto.CategoryDto;
 import by.kotik.newsservice.service.CategoryService;
+import dto.CategoryDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -33,15 +33,17 @@ public class CategoryController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<CategoryDto> createCategory(@RequestBody @Valid CategoryContentDto categoryContentDto){
+    public ResponseEntity<CategoryDto> createCategory(
+            @RequestBody @Valid CategoryContentDto categoryContentDto) {
         CategoryDto categoryDto = categoryService.createCategory(categoryContentDto);
         return ResponseEntity.ok(categoryDto);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{categoryId}")
-    public ResponseEntity<CategoryDto> updateCategory(@RequestBody @Valid CategoryContentDto categoryContentDto,
-                                                      @PathVariable UUID categoryId) {
+    public ResponseEntity<CategoryDto> updateCategory(
+            @RequestBody @Valid CategoryContentDto categoryContentDto,
+            @PathVariable UUID categoryId) {
         CategoryDto categoryDto = categoryService.updateCategory(categoryContentDto, categoryId);
         return ResponseEntity.ok(categoryDto);
     }

@@ -2,12 +2,14 @@ package by.kotik.newsservice.service;
 
 import by.kotik.newsservice.dto.NewsContentDto;
 import by.kotik.newsservice.dto.NewsDto;
+import by.kotik.newsservice.dto.NewsListResponseDto;
 import by.kotik.newsservice.entity.Category;
 import by.kotik.newsservice.entity.News;
 import by.kotik.newsservice.exception.NewsNotFoundException;
 import by.kotik.newsservice.exception.UnauthorizedNewsModifyingException;
 import by.kotik.newsservice.mapper.NewsMapper;
 import by.kotik.newsservice.repository.NewsRepository;
+import dto.NewsPreviewDto;
 import dto.UserAuthorizationDto;
 import event.NewsDeletedEvent;
 import lombok.RequiredArgsConstructor;
@@ -38,11 +40,18 @@ public class DefaultNewsService implements NewsService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<NewsDto> findAll() {
-        return newsRepository.findAll()
-                .stream()
-                .map(newsMapper::toDto)
+    public NewsListResponseDto findByCategories(List<UUID> categoryIds, int offset, int limit) {
+        List<Category> categories = categoryService.findByCategoryIds(categoryIds);
+        List<News> news = categories.isEmpty() ? newsRepository.findAllSortedByCreatedAtDesc()
+                : newsRepository.findByCategories(categories);
+
+        List<NewsPreviewDto> filteredNews = news.stream()
+                .skip(offset)
+                .limit(limit)
+                .map(newsMapper::toNewsPreviewDto)
                 .toList();
+
+        return new NewsListResponseDto(filteredNews, offset, limit, news.size());
     }
 
     @Override
@@ -141,6 +150,13 @@ public class DefaultNewsService implements NewsService {
     public NewsDto findDtoById(UUID newsId) {
         return newsRepository.findById(newsId)
                 .map(newsMapper::toDto)
+                .orElseThrow(() -> new NewsNotFoundException(newsId));
+    }
+
+    @Override
+    public NewsPreviewDto findPreviewDtoById(UUID newsId) {
+        return newsRepository.findById(newsId)
+                .map(newsMapper::toNewsPreviewDto)
                 .orElseThrow(() -> new NewsNotFoundException(newsId));
     }
 }

@@ -1,8 +1,8 @@
 package by.kotik.newsservice.mapper;
 
 import by.kotik.newsservice.dto.CategoryContentDto;
-import by.kotik.newsservice.dto.CategoryDto;
 import by.kotik.newsservice.entity.Category;
+import dto.CategoryDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 

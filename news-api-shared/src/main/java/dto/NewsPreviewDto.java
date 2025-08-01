@@ -1,6 +1,5 @@
-package by.kotik.newsservice.dto;
+package dto;
 
-import dto.CategoryDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,18 +10,16 @@ import java.util.List;
 import java.util.UUID;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class NewsDto {
+@AllArgsConstructor
+public class NewsPreviewDto {
     private UUID newsId;
     private UUID authorId;
     private String title;
-    private String content;
     private String previewImageUrl;
     private ZonedDateTime createdAt;
     private int likesCount;
     private int dislikesCount;
     private int commentsCount;
     private List<CategoryDto> categories = new ArrayList<>();
-    private List<NewsLikeDto> likes = new ArrayList<>();
 }
