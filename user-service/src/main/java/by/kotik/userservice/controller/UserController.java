@@ -49,4 +49,10 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserInformationById(userId));
     }
 
+    @GetMapping("/id/{userId}")
+    public ResponseEntity<UserInformationDto> getUserById(@PathVariable UUID userId) {
+        UserInformationDto user = userService.getUserInformationById(userId);
+        return ResponseEntity.ok(user);
+    }
+
 }

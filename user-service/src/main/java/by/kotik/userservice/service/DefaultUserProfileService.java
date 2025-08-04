@@ -1,6 +1,7 @@
 package by.kotik.userservice.service;
 
 import by.kotik.userservice.dto.UserProfileDto;
+import by.kotik.userservice.dto.UserPublicInfoDto;
 import by.kotik.userservice.entity.UserProfile;
 import by.kotik.userservice.mapper.UserProfileMapper;
 import by.kotik.userservice.repository.UserProfileRepository;
@@ -33,10 +34,10 @@ public class DefaultUserProfileService implements UserProfileService {
 
     @Override
     @Transactional
-    public UserProfileDto updateUserProfile(String login, UserProfileDto userProfileDto) {
+    public UserProfileDto updateUserProfile(String login, UserPublicInfoDto userPublicInfoDto) {
         UserProfile userProfile = userProfileRepository.findByLogin(login)
                 .orElseThrow(() -> new UserNotFoundException(login));
-        userProfileMapper.updateUser(userProfileDto, userProfile);
+        userProfileMapper.updateUser(userPublicInfoDto, userProfile);
         return userProfileMapper.toDto(userProfileRepository.save(userProfile));
     }
 

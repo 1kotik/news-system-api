@@ -1,6 +1,7 @@
 package by.kotik.userservice.controller;
 
 import by.kotik.userservice.dto.UserProfileDto;
+import by.kotik.userservice.dto.UserPublicInfoDto;
 import by.kotik.userservice.service.UserProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -34,8 +35,8 @@ public class UserProfileController {
             " or #login eq authentication.details.email")
     @PutMapping("/{login}/profile")
     public ResponseEntity<UserProfileDto> updateUserProfile(@PathVariable String login,
-                                                            @RequestBody UserProfileDto userProfileDto) {
-        return ResponseEntity.ok(userProfileService.updateUserProfile(login, userProfileDto));
+                                                            @RequestBody UserPublicInfoDto userPublicInfoDto) {
+        return ResponseEntity.ok(userProfileService.updateUserProfile(login, userPublicInfoDto));
     }
 
     @PreAuthorize("hasRole('ADMIN') or #login eq authentication.details.username" +

@@ -1,6 +1,7 @@
 package by.kotik.userservice.mapper;
 
 import by.kotik.userservice.dto.UserProfileDto;
+import by.kotik.userservice.dto.UserPublicInfoDto;
 import by.kotik.userservice.entity.User;
 import by.kotik.userservice.entity.UserProfile;
 import org.mapstruct.Mapper;
@@ -20,7 +21,8 @@ public interface UserProfileMapper {
 
     @Mapping(target = "profileId", ignore = true)
     @Mapping(target = "user", ignore = true)
-    void updateUser(UserProfileDto userProfileDto, @MappingTarget UserProfile userProfile);
+    @Mapping(target = "avatar", ignore = true)
+    void updateUser(UserPublicInfoDto userPublicInfoDto, @MappingTarget UserProfile userProfile);
 
     @Named("getUserId")
     default UUID getUserId(User user) {

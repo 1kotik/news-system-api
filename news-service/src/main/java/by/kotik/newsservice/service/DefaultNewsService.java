@@ -82,12 +82,9 @@ public class DefaultNewsService implements NewsService {
                               List<UUID> categoryIds, MultipartFile previewImage) {
         News news = newsRepository.findById(newsId)
                 .orElseThrow(() -> new NewsNotFoundException(newsId));
-        UUID userId = userAuthorizationDto.getUserId();
         List<Category> categories = categoryService.findByCategoryIds(categoryIds);
 
-        if (!news.getAuthorId().equals(userId)) {
-            throw new UnauthorizedNewsModifyingException(newsId, userId);
-        }
+        checkIfUnauthorizedNewsModifying(news);
 
         if (previewImage != null) {
             String previewImageUrl = fileStorageService.uploadFile(previewImage,
@@ -108,11 +105,8 @@ public class DefaultNewsService implements NewsService {
     public void deleteNews(UUID newsId) {
         News news = newsRepository.findById(newsId)
                 .orElseThrow(() -> new NewsNotFoundException(newsId));
-        UUID userId = userAuthorizationDto.getUserId();
 
-        if (!news.getAuthorId().equals(userId)) {
-            throw new UnauthorizedNewsModifyingException(newsId, userId);
-        }
+        checkIfUnauthorizedNewsModifying(news);
 
         newsRepository.delete(news);
 
@@ -158,5 +152,13 @@ public class DefaultNewsService implements NewsService {
         return newsRepository.findById(newsId)
                 .map(newsMapper::toNewsPreviewDto)
                 .orElseThrow(() -> new NewsNotFoundException(newsId));
+    }
+
+    private void checkIfUnauthorizedNewsModifying(News news) {
+        boolean isAuthorized = news.getAuthorId().equals(userAuthorizationDto.getUserId())
+                || userAuthorizationDto.getRoles().contains("ROLE_ADMIN");
+        if (!isAuthorized) {
+            throw new UnauthorizedNewsModifyingException(news.getNewsId(), userAuthorizationDto.getUserId());
+        }
     }
 }

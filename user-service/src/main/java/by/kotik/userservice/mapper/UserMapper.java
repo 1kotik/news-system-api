@@ -31,6 +31,7 @@ public interface UserMapper {
     @Mapping(source = "roles", target = "roles", qualifiedByName = "mapRoleToString")
     UserAuthorizationDto userToUserAuthorizationDto(User user);
 
+    @Mapping(source = "roles", target = "roles", qualifiedByName = "mapRoleToString")
     UserInformationDto userToUserInformationDto(User user);
 
     @Named("mapRoleToString")
