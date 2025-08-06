@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, UUID> {
-    @Query("select c from Comment c where c.newsId = :newsId and c.parentComment is null")
+    @Query("select c from Comment c where c.newsId = :newsId and c.parentComment is null order by c.createdAt desc")
     List<Comment> findByNewsId(UUID newsId);
     @Query("select c from Comment c where c.parentComment is null")
     List<Comment> findAllParents();

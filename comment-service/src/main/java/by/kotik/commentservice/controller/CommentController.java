@@ -2,6 +2,7 @@ package by.kotik.commentservice.controller;
 
 import by.kotik.commentservice.dto.CommentContentDto;
 import by.kotik.commentservice.dto.CommentDto;
+import by.kotik.commentservice.dto.CommentListResponseDto;
 import by.kotik.commentservice.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -32,9 +33,12 @@ public class CommentController {
     }
 
     @GetMapping("/{newsId}")
-    public ResponseEntity<List<CommentDto>> findByNewsId(@PathVariable UUID newsId) {
-        List<CommentDto> comments = commentService.findByNewsId(newsId);
-        return ResponseEntity.ok(comments);
+    public ResponseEntity<CommentListResponseDto> findByNewsId(
+            @PathVariable UUID newsId,
+            @RequestParam(name = "offset", defaultValue = "0") int offset,
+            @RequestParam(name = "limit", defaultValue = "10") int limit) {
+        CommentListResponseDto response = commentService.findByNewsId(newsId, offset, limit);
+        return ResponseEntity.ok(response);
     }
 
     @PreAuthorize("hasRole('USER')")

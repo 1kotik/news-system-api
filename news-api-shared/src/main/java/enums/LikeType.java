@@ -1,6 +1,7 @@
 package enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -15,7 +16,7 @@ public enum LikeType {
     @JsonCreator
     public static LikeType getLikeType(String likeType) {
         return Arrays.stream(LikeType.values())
-                .filter(type -> type.likeType.equals(likeType))
+                .filter(type -> type.likeType.equals(likeType.toLowerCase()))
                 .findFirst()
                 .orElse(LIKE);
     }
@@ -25,5 +26,11 @@ public enum LikeType {
             return LIKE;
         }
         return DISLIKE;
+    }
+
+    @Override
+    @JsonValue
+    public String toString() {
+        return likeType;
     }
 }

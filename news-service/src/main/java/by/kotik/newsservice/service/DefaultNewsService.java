@@ -1,5 +1,6 @@
 package by.kotik.newsservice.service;
 
+import by.kotik.newsservice.client.InternalUserServiceClient;
 import by.kotik.newsservice.dto.NewsContentDto;
 import by.kotik.newsservice.dto.NewsDto;
 import by.kotik.newsservice.dto.NewsListResponseDto;
@@ -11,6 +12,7 @@ import by.kotik.newsservice.mapper.NewsMapper;
 import by.kotik.newsservice.repository.NewsRepository;
 import dto.NewsPreviewDto;
 import dto.UserAuthorizationDto;
+import dto.UserPreviewDto;
 import event.NewsDeletedEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import service.FileStorageService;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -32,6 +35,7 @@ public class DefaultNewsService implements NewsService {
     private final CategoryService categoryService;
     private final FileStorageService fileStorageService;
     private final KafkaTemplate<UUID, Object> newsDeletedEventKafkaTemplate;
+    private final InternalUserServiceClient internalUserServiceClient;
 
     @Value("${file-storage.local.service.preview-image-folder-name}")
     private String previewImageFolderName;
@@ -73,7 +77,7 @@ public class DefaultNewsService implements NewsService {
 
         newsRepository.save(news);
 
-        return newsMapper.toDto(news);
+        return newsMapper.toDto(news, userAuthorizationDto, internalUserServiceClient);
     }
 
     @Override
@@ -97,7 +101,7 @@ public class DefaultNewsService implements NewsService {
         news.setCategories(categories);
         News updatedNews = newsRepository.save(news);
 
-        return newsMapper.toDto(updatedNews);
+        return newsMapper.toDto(updatedNews, userAuthorizationDto, internalUserServiceClient);
     }
 
     @Override
@@ -143,7 +147,7 @@ public class DefaultNewsService implements NewsService {
     @Override
     public NewsDto findDtoById(UUID newsId) {
         return newsRepository.findById(newsId)
-                .map(newsMapper::toDto)
+                .map(news -> newsMapper.toDto(news, userAuthorizationDto, internalUserServiceClient))
                 .orElseThrow(() -> new NewsNotFoundException(newsId));
     }
 

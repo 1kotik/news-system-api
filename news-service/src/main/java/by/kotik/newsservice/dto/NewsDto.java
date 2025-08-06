@@ -1,6 +1,8 @@
 package by.kotik.newsservice.dto;
 
 import dto.CategoryDto;
+import dto.UserPreviewDto;
+import enums.LikeType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,5 +26,6 @@ public class NewsDto {
     private int dislikesCount;
     private int commentsCount;
     private List<CategoryDto> categories = new ArrayList<>();
-    private List<NewsLikeDto> likes = new ArrayList<>();
+    private LikeType currentUserLike;
+    private UserPreviewDto authorPreview;
 }

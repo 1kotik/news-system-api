@@ -6,6 +6,7 @@ import by.kotik.userservice.service.InternalUserService;
 import dto.UserAuthenticationDto;
 import dto.UserAuthorizationDto;
 import dto.UserDetailsDto;
+import dto.UserPreviewDto;
 import dto.UserRegistrationTransitiveDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,7 +15,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -46,5 +52,11 @@ public class InternalUserController {
     @PostMapping("/change-password")
     public UserAuthorizationDto changePassword(@RequestBody UserAuthenticationDto userAuthenticationDto) {
         return internalUserService.changePassword(userAuthenticationDto);
+    }
+
+    @GetMapping("/previews")
+    public Map<UUID, UserPreviewDto> getUserPreviews(
+            @RequestParam(name = "userId", required = false) Set<UUID> userIds) {
+        return internalUserService.getUserPreviews(userIds);
     }
 }

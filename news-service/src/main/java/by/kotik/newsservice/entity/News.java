@@ -63,5 +63,5 @@ public class News {
     @OneToMany(mappedBy = "news")
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private List<NewsLike> newsLikes = new ArrayList<>();
+    private List<NewsLike> likes = new ArrayList<>();
 }

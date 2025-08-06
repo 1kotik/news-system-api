@@ -59,5 +59,5 @@ public class Comment {
     @OneToMany(mappedBy = "parentComment", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private List<Comment> childComments = new ArrayList<>();
     @OneToMany(mappedBy = "comment")
-    private List<CommentLike> commentLikes = new ArrayList<>();
+    private List<CommentLike> likes = new ArrayList<>();
 }

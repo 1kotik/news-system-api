@@ -1,5 +1,7 @@
 package by.kotik.commentservice.dto;
 
+import dto.UserPreviewDto;
+import enums.LikeType;
 import lombok.Data;
 
 import java.time.ZonedDateTime;
@@ -17,5 +19,6 @@ public class CommentDto {
     private int likesCount;
     private int dislikesCount;
     private List<CommentDto> childComments = new ArrayList<>();
-    private List<CommentLikeDto> commentLikes = new ArrayList<>();
+    private LikeType currentUserLike;
+    private UserPreviewDto authorPreview;
 }

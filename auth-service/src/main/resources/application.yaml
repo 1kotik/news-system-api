@@ -7,7 +7,7 @@ server:
   port: 8085
 jwt:
   secret: ${JWT_SECRET}
-  lifetime: 30m
+  lifetime: 1d
 eureka:
   client:
     service-url:
