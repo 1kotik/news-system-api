@@ -43,7 +43,6 @@ public class Comment {
     @Column(name = "content", nullable = false)
     private String content;
     @Column(name = "created_at", nullable = false)
-    @CreationTimestamp
     private ZonedDateTime createdAt;
     @Column(name = "likes_count", nullable = false)
     private int likesCount;

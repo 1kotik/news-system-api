@@ -12,12 +12,14 @@ import by.kotik.commentservice.repository.CommentRepository;
 import dto.UserAuthorizationDto;
 import dto.UserPreviewDto;
 import event.CommentCreatedOrDeletedEvent;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -76,13 +78,17 @@ public class DefaultCommentService implements CommentService {
         comment.setNewsId(newsId);
         comment.setUserId(userId);
         comment.setParentComment(parentComment);
+        comment.setCreatedAt(ZonedDateTime.now());
 
-        comment = commentRepository.save(comment);
+        commentRepository.save(comment);
 
         kafkaTemplate.send(commentCreatedOrDeletedTopicName, comment.getCommentId(),
                 new CommentCreatedOrDeletedEvent(comment.getNewsId(), comment.getCommentId(), true));
 
-        return commentMapper.toDto(comment, userAuthorizationDto);
+        CommentDto commentDto = commentMapper.toDto(comment, userAuthorizationDto);
+
+        setUserPreviews(List.of(commentDto));
+        return commentDto;
     }
 
     @Override
@@ -96,8 +102,10 @@ public class DefaultCommentService implements CommentService {
 
         commentRepository.save(comment);
 
-        return commentMapper.toDto(comment, userAuthorizationDto);
+        CommentDto commentDto = commentMapper.toDto(comment, userAuthorizationDto);
 
+        setUserPreviews(List.of(commentDto));
+        return commentDto;
     }
 
     @Override
