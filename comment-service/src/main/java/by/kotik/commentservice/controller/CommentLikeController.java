@@ -2,6 +2,8 @@ package by.kotik.commentservice.controller;
 
 import by.kotik.commentservice.service.CommentLikeService;
 import dto.LikeRequest;
+import dto.LikeResponseDto;
+import enums.LikeType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,9 +23,9 @@ public class CommentLikeController {
 
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/{commentId}")
-    public ResponseEntity<Void> likeComment(@PathVariable UUID commentId,
-                                            @RequestBody LikeRequest likeRequest) {
-        commentLikeService.likeComment(commentId, likeRequest);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<LikeResponseDto> likeComment(@PathVariable UUID commentId,
+                                                       @RequestBody LikeRequest likeRequest) {
+        LikeResponseDto likeResponseDto = commentLikeService.likeComment(commentId, likeRequest);
+        return ResponseEntity.ok(likeResponseDto);
     }
 }
